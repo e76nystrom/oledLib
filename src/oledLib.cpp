@@ -1,8 +1,18 @@
 #include "oledLib.h"
 
+#include <cstdio>
+#include <cstring>
+#include <stdlib.h>
+
+inline char *LTOA(long val, char *s, int radix)
+{
+ sprintf(s, "%ld", val);
+ return s;
+}
+
 size_t drawString(char x, char y, const char *str)
 {
- u8x8.drawString(x, y, str);
+ U8X8_DrawString(x, y, str);
 #if 0
  printf("x ");
  printf(static_cast<int>(x));
@@ -22,7 +32,7 @@ void newScreen(const char* title)
  printf(title);
  printf("\n");
 #endif
- u8x8.clear();
+ U8X8_Clear();
  drawString(0, 0, title);
 }
 
@@ -38,7 +48,7 @@ void erase(char x, char y, char len)
 {
  while (len != 0)
  {
-  u8x8.drawString(x, y, " ");
+  U8X8_DrawString(x, y, " ");
   y += 1;
   len -= 1;
  }
@@ -59,7 +69,7 @@ size_t drawNumber(char x, char y, int val)
 size_t drawNumber(char x, char y, unsigned long val)
 {
  char buf[12];
- ltoa(static_cast<long>(val), buf, 10);
+ LTOA(static_cast<long>(val), buf, 10);
  drawString(x, y, buf);
 #if 0
  printf(val);
@@ -110,7 +120,7 @@ size_t drawFloat(char x, char y, float floatNumber, uint8_t dp)
   auto temp = static_cast<unsigned long>(floatNumber);
 
   // Put integer part into array
-  ltoa(static_cast<long>(temp), str + ptr, 10);
+  LTOA(static_cast<long>(temp), str + ptr, 10);
 
   // Find out where the null is to get the digit count loaded
   while (static_cast<uint8_t>(str[ptr]) != 0) ptr++; // Move the pointer along
@@ -131,7 +141,7 @@ size_t drawFloat(char x, char y, float floatNumber, uint8_t dp)
     i++;
     floatNumber *= 10;       // for the next decimal
     temp = static_cast<unsigned long>(floatNumber);      // get the decimal
-    ltoa(static_cast<long>(temp), str + ptr, 10);
+    LTOA(static_cast<long>(temp), str + ptr, 10);
     ptr++;
     digits++;         // Increment pointer and digits count
     floatNumber -= static_cast<float>(temp);     // Remove that digit
