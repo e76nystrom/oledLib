@@ -12,12 +12,28 @@
 
 #if defined(ESP_PLATFORM)
 
-#include "u8x8.h"
+//#define U8G2
 
+#if defined(U8G2)
+
+#include "u8g2.h"
+inline u8g2_t u8g2;
+
+#else
+
+#include "u8x8.h"
 inline u8x8_t u8x8;
 
+#endif
+
+
+#if defined(U8G2)
+#define U8X8_DrawString(x, y, str) u8g2_DrawStr(&u8g2, x, y, str)
+#define U8X8_Clear() u8g2_ClearBuffer(&u8g2)
+#else
 #define U8X8_DrawString(x, y, str) u8x8_DrawString(&u8x8, x, y, str)
 #define U8X8_Clear() u8x8_ClearDisplay(&u8x8)
+#endif
 
 #endif	/* ESP_PLATFORM */
 

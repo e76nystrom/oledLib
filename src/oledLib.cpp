@@ -2,7 +2,7 @@
 
 #include <cstdio>
 #include <cstring>
-#include <stdlib.h>
+#include <cstdlib>
 
 inline char *LTOA(long val, char *s, int radix)
 {
